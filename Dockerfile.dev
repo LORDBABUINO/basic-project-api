@@ -5,6 +5,9 @@ FROM node:16-buster-slim
 #   && apt-get upgrade libp11-kit0 gcc-8 libc-bin gnutls-bin systemd -yq \
 #   && apt autoremove -yq
 
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.12.1/wait /wait
+RUN chmod +x /wait
+COPY ./node-entrypoint.sh .
 WORKDIR /home/node/app
 COPY ./package.json ./yarn.* .
 RUN yarn
