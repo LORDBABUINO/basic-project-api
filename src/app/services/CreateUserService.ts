@@ -1,25 +1,23 @@
-import { getCustomRepository } from 'typeorm'
-
-import User from '../models/User'
-import UserRepository from '../repositories/UserRepository'
+import AppDataSource from '../../database';
+import User from '../models/User';
 
 interface Request {
-  fullname: string
-  email: string
-  password: string
+  fullname: string;
+  email: string;
+  password: string;
 }
 
 class CreateUserService {
   public async execute({ fullname, email, password }: Request): Promise<User> {
-    const userRepository = getCustomRepository(UserRepository)
+    const userRepository = AppDataSource.getRepository(User);
     const user = userRepository.create({
       fullname,
       email,
       password,
-    })
-    await userRepository.save(user)
-    return user
+    });
+    await userRepository.save(user);
+    return user;
   }
 }
 
-export default CreateUserService
+export default CreateUserService;

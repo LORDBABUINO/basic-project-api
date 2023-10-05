@@ -7,9 +7,7 @@ module.exports = {
   extends: [
     'airbnb-base',
     'plugin:prettier/recommended',
-    'prettier/@typescript-eslint',
     'plugin:jest/recommended',
-    'prettier/@typescript-eslint',
     'plugin:@typescript-eslint/recommended',
   ],
   parser: '@typescript-eslint/parser',
@@ -30,7 +28,7 @@ module.exports = {
     'class-methods-use-this': 'off',
     'prettier/prettier': 'error',
     'simple-import-sort/imports': 'error',
-    semi: ['error', 'never'],
+    semi: ['error', 'always'],
     'import/extensions': [
       'error',
       'ignorePackages',
@@ -42,4 +40,4 @@ module.exports = {
     ],
     camelcase: ['error', { allow: ['created_at', 'updated_at'] }],
   },
-}
+};
