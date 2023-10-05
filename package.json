@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rimraf ./build && tsc",
     "dev": "ts-node-dev --respawn --transpile-only --inspect --ignore-watch node_modules ./src/start/server.ts",
-    "migrate": "typeorm migration:run -d src/database/index.ts",
+    "migrate": "yarn typeorm migration:run -d src/database/index.ts",
     "commit": "git-cz",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
     "lint": "eslint --fix --ext .js,.ts .",
