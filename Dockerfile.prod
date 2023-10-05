@@ -1,4 +1,4 @@
-FROM node:15-buster-slim
+FROM node:18-alpine3.17
 WORKDIR /home/node/app
 COPY pacakge.json yarn.lock ./
 RUN yarn install --production

@@ -1,4 +1,4 @@
-FROM node:16-buster-slim
+FROM node:18-alpine3.17
 # RUN echo "deb http://ftp.de.debian.org/debian sid main" >> /etc/apt/sources.list \
 #   && apt-get update -yq \
 #   && apt-get remove libgcc1 -yq \
