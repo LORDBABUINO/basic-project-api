@@ -23,7 +23,9 @@ services:
     working_dir: /home/node/app
     command: /node-entrypoint.sh
     volumes:
-      - ./:/home/node/app
+      - ./src:/home/node/app/src
+      - ./node-entrypoint.sh:/node-entrypoint.sh
+      - ./tsconfig.json:/home/node/app/tsconfig.json
     depends_on:
       - postgres
     ports:

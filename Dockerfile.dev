@@ -7,7 +7,6 @@ FROM node:16-buster-slim
 
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.12.1/wait /wait
 RUN chmod +x /wait
-COPY ./node-entrypoint.sh .
 WORKDIR /home/node/app
 COPY ./package.json ./yarn.* .
 RUN yarn

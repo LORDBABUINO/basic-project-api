@@ -1,5 +1,5 @@
 #!/bin/sh
 
-sh -c "/wait"
+sh -c /wait
 yarn migrate
 yarn dev
