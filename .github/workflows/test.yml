@@ -102,9 +102,10 @@ jobs:
           DB_USER: admin
           DB_PASSWORD: postgres
           DB_NAME: db_test
+          CHECK: here
 
       - name: Check Integration
-        run: yarn integration
+        run: env && yarn integration
         env:
           TYPEORM_CONNECTION: postgres
           TYPEORM_SYNCHRONIZE: true
