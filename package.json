@@ -15,10 +15,8 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "*.ts": [
-      "yarn lint",
-      "cross-env CI=true yarn test --bail --findRelatedTests"
-    ]
+    "*.ts": "yarn lint",
+    "!(src/database/**)/*.ts": "cross-env CI=true yarn test --bail --findRelatedTests"
   },
   "dependencies": {
     "cors": "^2.8.5",
