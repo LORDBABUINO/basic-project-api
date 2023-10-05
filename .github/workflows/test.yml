@@ -92,7 +92,7 @@ jobs:
         run: yarn
 
       - name: Run migrations
-        run: yarn migrate
+        run: env && yarn migrate
         env:
           TYPEORM_CONNECTION: postgres
           TYPEORM_SYNCHRONIZE: true
