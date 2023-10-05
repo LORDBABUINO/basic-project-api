@@ -96,7 +96,7 @@ jobs:
         run: yarn
 
       - name: Run migrations
-        run: env && yarn migrate
+        run: yarn migrate
         env:
           TYPEORM_CONNECTION: postgres
           TYPEORM_SYNCHRONIZE: true
@@ -106,15 +106,13 @@ jobs:
           DB_USER: admin
           DB_PASS: postgres
           DB_NAME: db_test
-          CHECK: here
 
       - name: Check Integration
-        run: env && yarn integration
+        run: yarn integration
         env:
           TYPEORM_CONNECTION: postgres
           TYPEORM_SYNCHRONIZE: true
           TYPEORM_LOGGING: true
-          TYPEORM_ENTITIES: src/app/models/*.ts
           DB_HOST: localhost
           DB_PORT: 5432
           DB_USER: admin
