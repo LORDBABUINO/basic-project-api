@@ -101,4 +101,39 @@ describe('simple test', () => {
       UserValidator.isValidUserRequest(userRequestWithInvalidPassword)
     ).toThrow('Invalid parameter type: password must be a string.');
   });
+  it('should throw an error when the email is missing the "@" symbol', () => {
+    const userRequestWithInvalidEmail = {
+      fullname: 'John Doe',
+      email: 'johndoexample.com', // Invalid format, missing "@" symbol
+      password: 'securePassword123',
+    };
+
+    expect(() =>
+      UserValidator.isValidUserRequest(userRequestWithInvalidEmail)
+    ).toThrow('Invalid email format');
+  });
+
+  it('should throw an error when the email is missing the domain part', () => {
+    const userRequestWithInvalidEmail = {
+      fullname: 'John Doe',
+      email: 'johndoe@', // Invalid format, missing domain part
+      password: 'securePassword123',
+    };
+
+    expect(() =>
+      UserValidator.isValidUserRequest(userRequestWithInvalidEmail)
+    ).toThrow('Invalid email format');
+  });
+
+  it('should throw an error when the email contains spaces', () => {
+    const userRequestWithInvalidEmail = {
+      fullname: 'John Doe',
+      email: 'john doe@example.com', // Invalid format, contains spaces
+      password: 'securePassword123',
+    };
+
+    expect(() =>
+      UserValidator.isValidUserRequest(userRequestWithInvalidEmail)
+    ).toThrow('Invalid email format');
+  });
 });

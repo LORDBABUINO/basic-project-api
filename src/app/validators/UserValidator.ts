@@ -18,5 +18,11 @@ export default class UserValidator {
       );
     if (body?.password.length < 8)
       throw new HttpError('Password must be at least 8 characters long', 400);
+    if (
+      !/^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$/.test(
+        body.email
+      )
+    )
+      throw new HttpError('Invalid email format', 400);
   }
 }
