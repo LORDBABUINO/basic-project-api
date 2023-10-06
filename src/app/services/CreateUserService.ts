@@ -1,4 +1,5 @@
 import AppDataSource from '../../database';
+import logger from '../../logger';
 import HttpError from '../error/HttpError';
 import User from '../models/User';
 
@@ -11,7 +12,7 @@ class CreateUserService {
     const userRepository = AppDataSource.getRepository(User);
     const userExists = await userRepository.findOne({ where: { email } });
     if (userExists) {
-      throw new HttpError('User already exists', 400);
+      throw new HttpError(`User[${email}] already exists`, 400);
     }
     const user = userRepository.create({
       fullname,
@@ -19,6 +20,7 @@ class CreateUserService {
       password,
     });
     await userRepository.save(user);
+    logger.info(`User registered: ${email}`);
     return user;
   }
 }

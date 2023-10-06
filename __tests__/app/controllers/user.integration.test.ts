@@ -2,6 +2,7 @@ import request from 'supertest';
 
 import User from '../../../src/app/models/User';
 import AppDataSource from '../../../src/database';
+import logger from '../../../src/logger';
 import app from '../../../src/start/app';
 
 describe('/users', () => {
@@ -56,7 +57,7 @@ describe('/users', () => {
     expect(data[0]).toEqual(expect.any(User));
     expect(statusArray).toContain(201);
     expect(statusArray).toContain(400);
-    expect(messageArray).toContain('User already exists');
+    expect(messageArray).toContain('User[john@test.com] already exists');
   });
   it('Should return a 400 Bad Request and an error message for missing required fields', async () => {
     const res = await request(app).post('/users').send({});
@@ -64,6 +65,20 @@ describe('/users', () => {
     expect(res.status).toBe(400);
     expect(res.body.message).toBe(
       'Invalid parameter type: fullname, email, password must be a string.'
+    );
+  });
+  it('Should create a log entry when registering a user', async () => {
+    const userData = {
+      fullname: 'John Doe',
+      email: 'johndoe@example.com',
+      password: 'securePassword123',
+    };
+    logger.info = jest.fn();
+
+    await request(app).post('/users').send(userData);
+
+    expect(logger.info).toHaveBeenCalledWith(
+      'User registered: johndoe@example.com'
     );
   });
 });

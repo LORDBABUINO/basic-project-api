@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 
+import logger from '../../logger';
 import HttpError from '../error/HttpError';
 import CreateUserService from '../services/CreateUserService';
 import UserValidator from '../validators/UserValidator';
@@ -11,7 +12,7 @@ class UserController {
       await new CreateUserService().create(req.body);
       return res.status(201).end();
     } catch (error) {
-      console.error(error);
+      logger.error((error as Error)?.message ?? error);
       return (error as HttpError).status
         ? res
             .status((error as HttpError).status)
