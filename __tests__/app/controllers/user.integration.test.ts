@@ -22,7 +22,7 @@ describe('/users', () => {
   afterEach(async () => {
     await AppDataSource.getRepository(User).clear();
   });
-  it('Should save User on database (route: POST )', async () => {
+  it('POST: Should save User on database', async () => {
     const mock = {
       fullname: 'john test',
       email: 'john@test.com',
@@ -35,7 +35,7 @@ describe('/users', () => {
     expect(data[0]).toEqual(expect.objectContaining(mock));
     expect(res.status).toEqual(201);
   });
-  it("Should NOT save User on database if there' another user with the same email(route: POST )", async () => {
+  it("POST: Should NOT save User on database if there' another user with the same email", async () => {
     const mock = {
       fullname: 'john test',
       email: 'john@test.com',
@@ -59,7 +59,7 @@ describe('/users', () => {
     expect(statusArray).toContain(400);
     expect(messageArray).toContain('User[john@test.com] already exists');
   });
-  it('Should return a 400 Bad Request and an error message for missing required fields', async () => {
+  it('POST: Should return a 400 Bad Request and an error message for missing required fields', async () => {
     const res = await request(app).post('/users').send({});
 
     expect(res.status).toBe(400);
@@ -67,7 +67,7 @@ describe('/users', () => {
       'Invalid parameter type: fullname, email, password must be a string.'
     );
   });
-  it('Should create a log entry when registering a user', async () => {
+  it('POST: Should create a log entry when registering a user', async () => {
     const userData = {
       fullname: 'John Doe',
       email: 'johndoe@example.com',
