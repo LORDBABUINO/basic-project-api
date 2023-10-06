@@ -21,7 +21,7 @@ describe('simple test', () => {
 
     expect(() =>
       UserValidator.isValidUserRequest(userRequestWithoutFullname)
-    ).toThrow('Missing required fields: fullname');
+    ).toThrow('Invalid parameter type: fullname must be a string.');
   });
 
   it('should throw an error when email is missing', () => {
@@ -32,7 +32,7 @@ describe('simple test', () => {
 
     expect(() =>
       UserValidator.isValidUserRequest(userRequestWithoutEmail)
-    ).toThrow('Missing required fields: email');
+    ).toThrow('Invalid parameter type: email must be a string.');
   });
 
   it('should throw an error when password is missing', () => {
@@ -43,7 +43,7 @@ describe('simple test', () => {
 
     expect(() =>
       UserValidator.isValidUserRequest(userRequestWithoutPassword)
-    ).toThrow('Missing required fields: password');
+    ).toThrow('Invalid parameter type: password must be a string.');
   });
 
   it('should throw an error when multiple required fields are missing', () => {
@@ -53,7 +53,7 @@ describe('simple test', () => {
 
     expect(() =>
       UserValidator.isValidUserRequest(userRequestWithoutMultipleFields)
-    ).toThrow('Missing required fields: fullname, password');
+    ).toThrow('Invalid parameter type: fullname, password must be a string.');
   });
   it('should throw an error when password is shorter than 8 characters', () => {
     const userRequestWithWeakPassword = {
@@ -65,5 +65,40 @@ describe('simple test', () => {
     expect(() =>
       UserValidator.isValidUserRequest(userRequestWithWeakPassword)
     ).toThrow('Password must be at least 8 characters long');
+  });
+  it('should throw an error when fullname is not a string', () => {
+    const userRequestWithInvalidFullname = {
+      fullname: 123,
+      email: 'johndoe@example.com',
+      password: 'securePassword123',
+    };
+
+    expect(() =>
+      UserValidator.isValidUserRequest(userRequestWithInvalidFullname)
+    ).toThrow('Invalid parameter type: fullname must be a string.');
+  });
+
+  it('should throw an error when email is not a string', () => {
+    const userRequestWithInvalidEmail = {
+      fullname: 'John Doe',
+      email: 123,
+      password: 'securePassword123',
+    };
+
+    expect(() =>
+      UserValidator.isValidUserRequest(userRequestWithInvalidEmail)
+    ).toThrow('Invalid parameter type: email must be a string.');
+  });
+
+  it('should throw an error when password is not a string', () => {
+    const userRequestWithInvalidPassword = {
+      fullname: 'John Doe',
+      email: 'johndoe@example.com',
+      password: true,
+    };
+
+    expect(() =>
+      UserValidator.isValidUserRequest(userRequestWithInvalidPassword)
+    ).toThrow('Invalid parameter type: password must be a string.');
   });
 });
