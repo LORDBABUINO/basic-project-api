@@ -2,12 +2,13 @@ import { Request, Response } from 'express';
 
 import HttpError from '../error/HttpError';
 import CreateUserService from '../services/CreateUserService';
+import UserValidator from '../validators/UserValidator';
 
 class UserController {
-  async store(req: Request, res: Response) {
+  async store(req: Request, res: Response): Promise<Response> {
     try {
-      const { fullname, email, password } = req.body;
-      await new CreateUserService().execute({ fullname, email, password });
+      UserValidator.isValidUserRequest(req.body);
+      await new CreateUserService().create(req.body);
       return res.status(201).end();
     } catch (error) {
       console.error(error);

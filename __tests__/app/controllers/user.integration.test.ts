@@ -58,4 +58,12 @@ describe('/users', () => {
     expect(statusArray).toContain(400);
     expect(messageArray).toContain('User already exists');
   });
+  it('Should return a 400 Bad Request and an error message for missing required fields', async () => {
+    const res = await request(app).post('/users').send({});
+
+    expect(res.status).toBe(400);
+    expect(res.body.message).toBe(
+      'Missing required fields: fullname, email, password'
+    );
+  });
 });

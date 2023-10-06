@@ -2,14 +2,12 @@ import AppDataSource from '../../database';
 import HttpError from '../error/HttpError';
 import User from '../models/User';
 
-interface Request {
-  fullname: string;
-  email: string;
-  password: string;
-}
-
 class CreateUserService {
-  public async execute({ fullname, email, password }: Request): Promise<User> {
+  public async create({
+    fullname,
+    email,
+    password,
+  }: UserRequest): Promise<User> {
     const userRepository = AppDataSource.getRepository(User);
     const userExists = await userRepository.findOne({ where: { email } });
     if (userExists) {
