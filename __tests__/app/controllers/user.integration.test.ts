@@ -63,7 +63,7 @@ describe('/users', () => {
 
     expect(res.status).toBe(400);
     expect(res.body.message).toBe(
-      'Missing required fields: fullname, email, password'
+      'Invalid parameter type: fullname, email, password must be a string.'
     );
   });
 });
