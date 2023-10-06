@@ -12,5 +12,7 @@ export default class UserValidator {
         ].join(', ')}`,
         400
       );
+    if (body?.password.length < 8)
+      throw new HttpError('Password must be at least 8 characters long', 400);
   }
 }
