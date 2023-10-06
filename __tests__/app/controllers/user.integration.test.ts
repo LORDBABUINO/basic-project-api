@@ -50,10 +50,12 @@ describe('/users', () => {
       request(app).post('/users').send(mock2),
     ]);
     const statusArray = res.map(({ status }) => status);
+    const messageArray = res.map(({ body: { message } }) => message);
     const data = await AppDataSource.getRepository(User).find();
     expect(data.length).toEqual(1);
     expect(data[0]).toEqual(expect.any(User));
     expect(statusArray).toContain(201);
     expect(statusArray).toContain(400);
+    expect(messageArray).toContain('User already exists');
   });
 });

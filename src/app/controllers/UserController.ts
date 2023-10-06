@@ -11,7 +11,11 @@ class UserController {
       return res.status(201).end();
     } catch (error) {
       console.error(error);
-      return res.status((error as HttpError).status ?? 500).json(error);
+      return (error as HttpError).status
+        ? res
+            .status((error as HttpError).status)
+            .json({ message: (error as Error).message })
+        : res.status(500).json({ error });
     }
   }
 }
