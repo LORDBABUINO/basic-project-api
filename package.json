@@ -16,7 +16,7 @@
   },
   "lint-staged": {
     "*.ts": "yarn lint",
-    "!(src/database/**)/*.ts": "cross-env CI=true yarn test --bail --findRelatedTests"
+    "!(src/database/**)/*.ts": "cross-env CI=true yarn test --bail --findRelatedTests --passWithNoTests"
   },
   "dependencies": {
     "cors": "^2.8.5",

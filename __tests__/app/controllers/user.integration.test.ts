@@ -34,4 +34,26 @@ describe('/users', () => {
     expect(data[0]).toEqual(expect.objectContaining(mock));
     expect(res.status).toEqual(201);
   });
+  it("Should NOT save User on database if there' another user with the same email(route: POST )", async () => {
+    const mock = {
+      fullname: 'john test',
+      email: 'john@test.com',
+      password: 'passwordTest',
+    };
+    const mock2 = {
+      fullname: 'john test2',
+      email: 'john@test.com',
+      password: 'passwordTest2',
+    };
+    const res = await Promise.all([
+      request(app).post('/users').send(mock),
+      request(app).post('/users').send(mock2),
+    ]);
+    const statusArray = res.map(({ status }) => status);
+    const data = await AppDataSource.getRepository(User).find();
+    expect(data.length).toEqual(1);
+    expect(data[0]).toEqual(expect.any(User));
+    expect(statusArray).toContain(201);
+    expect(statusArray).toContain(400);
+  });
 });

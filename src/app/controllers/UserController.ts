@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 
+import HttpError from '../error/HttpError';
 import CreateUserService from '../services/CreateUserService';
 
 class UserController {
@@ -8,8 +9,9 @@ class UserController {
       const { fullname, email, password } = req.body;
       await new CreateUserService().execute({ fullname, email, password });
       return res.status(201).end();
-    } catch (err) {
-      return res.status(400).json({ error: err });
+    } catch (error) {
+      console.error(error);
+      return res.status((error as HttpError).status ?? 500).json(error);
     }
   }
 }
