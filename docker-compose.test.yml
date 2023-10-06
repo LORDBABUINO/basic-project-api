@@ -5,10 +5,6 @@ services:
       context: .
       dockerfile: Dockerfile.postgres
     container_name: test_postgres_basic_api
-    ports:
-      - ${DB_PORT}:5432
-    volumes:
-      - ./db:/var/lib/postgresql/data
     env_file:
       .env
     environment:
@@ -43,8 +39,6 @@ services:
       - ./jest.config.integration.ts:/home/node/app/jest.config.integration.ts
     depends_on:
       - postgres
-    ports:
-      - ${APP_PORT}:3000
     env_file:
       .env
     environment:
