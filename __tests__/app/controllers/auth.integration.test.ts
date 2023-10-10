@@ -34,4 +34,23 @@ describe('/auth', () => {
     expect(response.status).toBe(200);
     expect(response.body.token).toEqual(expect.any(String));
   });
+  it('POST: Should NOT log in a user with INvalid credentials', async () => {
+    const user = {
+      fullname: 'john test',
+      email: 'john@test.com',
+      password: 'passwordTest',
+    };
+
+    await request(app).post('/users').send(user);
+
+    const response = await request(app).post('/auth').send({
+      email: user.email,
+      password: 'wrongPassword',
+    });
+
+    expect(response.status).toBe(401);
+    expect(response.body.message).toEqual(
+      `User[${user.email}] used invalid credentials`
+    );
+  });
 });

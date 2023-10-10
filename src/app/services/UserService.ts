@@ -27,7 +27,10 @@ class UserService {
     return user;
   }
 
-  public async checkLogin({ email }: LoginRequest): Promise<LoginResponse> {
+  public async checkLogin({
+    email,
+    password,
+  }: LoginRequest): Promise<LoginResponse> {
     const userRepository = AppDataSource.getRepository(User);
     const user = await userRepository.findOne({
       where: { email },
@@ -35,6 +38,9 @@ class UserService {
     });
     if (!user) {
       throw new HttpError(`User[${email}] do NOT exists`, 400);
+    }
+    if (!(await bcrypt.compare(password, user.password))) {
+      throw new HttpError(`User[${email}] used invalid credentials`, 401);
     }
     logger.info(`User logged in: ${email}`);
     return {
