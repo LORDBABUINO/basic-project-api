@@ -1,6 +1,7 @@
 import request from 'supertest';
 
 import AppDataSource from '../../../src/database';
+import logger from '../../../src/logger';
 import app from '../../../src/start/app';
 
 describe('/auth', () => {
@@ -52,5 +53,22 @@ describe('/auth', () => {
     expect(response.body.message).toEqual(
       `User[${user.email}] used invalid credentials`
     );
+  });
+  it('POST: Should create a log entry when user is logging in', async () => {
+    const user = {
+      fullname: 'john test',
+      email: 'john@test.com',
+      password: 'passwordTest',
+    };
+
+    await request(app).post('/users').send(user);
+
+    logger.info = jest.fn();
+    await request(app).post('/auth').send({
+      email: user.email,
+      password: user.password,
+    });
+
+    expect(logger.info).toHaveBeenCalledWith('User logged in: john@test.com');
   });
 });
