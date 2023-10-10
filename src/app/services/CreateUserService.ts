@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt';
+
 import AppDataSource from '../../database';
 import logger from '../../logger';
 import HttpError from '../error/HttpError';
@@ -17,7 +19,7 @@ class CreateUserService {
     const user = userRepository.create({
       fullname,
       email,
-      password,
+      password: await bcrypt.hash(password, 10),
     });
     await userRepository.save(user);
     logger.info(`User registered: ${email}`);

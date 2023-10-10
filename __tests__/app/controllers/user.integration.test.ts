@@ -32,7 +32,13 @@ describe('/users', () => {
     const data = await AppDataSource.getRepository(User).find();
     expect(data.length).toEqual(1);
     expect(data[0]).toEqual(expect.any(User));
-    expect(data[0]).toEqual(expect.objectContaining(mock));
+    expect(data[0]).toEqual(
+      expect.objectContaining({
+        fullname: mock.fullname,
+        email: mock.email,
+        password: expect.any(String),
+      })
+    );
     expect(res.status).toEqual(201);
   });
   it("POST: Should NOT save User on database if there' another user with the same email", async () => {
@@ -46,18 +52,21 @@ describe('/users', () => {
       email: 'john@test.com',
       password: 'passwordTest2',
     };
-    const res = await Promise.all([
-      request(app).post('/users').send(mock),
-      request(app).post('/users').send(mock2),
-    ]);
-    const statusArray = res.map(({ status }) => status);
-    const messageArray = res.map(({ body: { message } }) => message);
+    const res1 = await request(app).post('/users').send(mock);
+    const res2 = await request(app).post('/users').send(mock2);
     const data = await AppDataSource.getRepository(User).find();
     expect(data.length).toEqual(1);
     expect(data[0]).toEqual(expect.any(User));
-    expect(statusArray).toContain(201);
-    expect(statusArray).toContain(400);
-    expect(messageArray).toContain('User[john@test.com] already exists');
+    expect(data[0]).toEqual(
+      expect.objectContaining({
+        fullname: mock.fullname,
+        email: mock.email,
+        password: expect.any(String),
+      })
+    );
+    expect(res1.status).toEqual(201);
+    expect(res2.status).toEqual(400);
+    expect(res2.body.message).toContain('User[john@test.com] already exists');
   });
   it('POST: Should return a 400 Bad Request and an error message for missing required fields', async () => {
     const res = await request(app).post('/users').send({});
@@ -80,5 +89,25 @@ describe('/users', () => {
     expect(logger.info).toHaveBeenCalledWith(
       'User registered: johndoe@example.com'
     );
+  });
+  it('POST: Should store user password as hash in database', async () => {
+    const testUser = {
+      fullname: 'testuser',
+      email: 'test@example.com',
+      password: 'securePassword123',
+    };
+
+    const registrationResponse = await request(app)
+      .post('/users')
+      .send(testUser);
+
+    expect(registrationResponse.status).toBe(201);
+
+    const retrievedUser = await AppDataSource.getRepository(User).findOne({
+      where: { email: testUser.email },
+    });
+
+    expect(retrievedUser?.password).not.toBeNull();
+    expect(retrievedUser?.password).not.toBe(testUser.password);
   });
 });

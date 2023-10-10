@@ -19,6 +19,7 @@
     "!(src/database/**)/*.ts": "cross-env CI=true yarn test --bail --findRelatedTests --passWithNoTests"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "pg": "^8.5.1",
@@ -30,6 +31,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.7.2",
     "@commitlint/config-conventional": "^17.7.0",
+    "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.9",
     "@types/express": "^4.17.9",
     "@types/jest": "^29.5.5",
