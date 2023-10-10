@@ -2,7 +2,16 @@ import HttpError from '../error/HttpError';
 
 export default class UserValidator {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static isValidLoginRequest(body: any): asserts body is LoginRequest {}
+  static isValidLoginRequest(body: any): asserts body is LoginRequest {
+    if (typeof body.email !== 'string' || typeof body.password !== 'string')
+      throw new HttpError(
+        `Invalid parameter type: ${[
+          ...(typeof body?.email === 'string' ? [] : ['email']),
+          ...(typeof body?.password === 'string' ? [] : ['password']),
+        ].join(', ')} must be a string.`,
+        400
+      );
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static isValidUserRequest(body: any): asserts body is UserRequest {
