@@ -2,6 +2,9 @@ import HttpError from '../error/HttpError';
 
 export default class UserValidator {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  static isValidLoginRequest(body: any): asserts body is LoginRequest {}
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static isValidUserRequest(body: any): asserts body is UserRequest {
     if (
       typeof body.fullname !== 'string' ||

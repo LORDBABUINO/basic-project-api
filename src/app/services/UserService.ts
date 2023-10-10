@@ -1,11 +1,12 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 import AppDataSource from '../../database';
 import logger from '../../logger';
 import HttpError from '../error/HttpError';
 import User from '../models/User';
 
-class CreateUserService {
+class UserService {
   public async create({
     fullname,
     email,
@@ -25,6 +26,24 @@ class CreateUserService {
     logger.info(`User registered: ${email}`);
     return user;
   }
+
+  public async checkLogin({ email }: LoginRequest): Promise<LoginResponse> {
+    const userRepository = AppDataSource.getRepository(User);
+    const user = await userRepository.findOne({
+      where: { email },
+      select: ['id', 'fullname', 'email', 'password'],
+    });
+    if (!user) {
+      throw new HttpError(`User[${email}] do NOT exists`, 400);
+    }
+    logger.info(`User logged in: ${email}`);
+    return {
+      token: jwt.sign(
+        { id: user.id, fullname: user.fullname, email },
+        process.env.JWT_SECRET ?? ''
+      ),
+    };
+  }
 }
 
-export default CreateUserService;
+export default UserService;
