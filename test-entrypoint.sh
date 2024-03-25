@@ -2,4 +2,4 @@
 
 /wait
 yarn migrate
-yarn integration --watchAll
+yarn test:e2e:debug

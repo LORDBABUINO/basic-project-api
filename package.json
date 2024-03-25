@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "basic-project-api",
   "version": "1.0.0",
   "main": "./build/server.js",
   "license": "MIT",
@@ -10,8 +10,10 @@
     "commit": "git-cz",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
     "lint": "eslint --fix --ext .js,.ts .",
-    "test": "jest -c jest.config.unit.ts",
-    "integration": "jest -c jest.config.integration.ts -i",
+    "test:unit": "node --experimental-vm-modules ./node_modules/.bin/jest -c jest.config.unit.ts",
+    "test:e2e": "node --experimental-vm-modules ./node_modules/.bin/jest -c jest.config.integration.ts -i",
+    "test:unit:debug": "node --inspect --experimental-vm-modules ./node_modules/.bin/jest -c jest.config.unit.ts --watchAll",
+    "test:e2e:debug": "node --inspect --experimental-vm-modules ./node_modules/.bin/jest -c jest.config.integration.ts -i --watchAll",
     "prepare": "husky install"
   },
   "lint-staged": {
