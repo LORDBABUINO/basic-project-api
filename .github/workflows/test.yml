@@ -60,7 +60,7 @@ jobs:
         run: npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose
 
       - name: Check tests
-        run: yarn test
+        run: yarn test:unit
 
   integration-tests:
     runs-on: ubuntu-latest
@@ -113,7 +113,7 @@ jobs:
           DB_NAME: db_test
 
       - name: Check Integration
-        run: yarn integration
+        run: yarn test:e2e
         env:
           TYPEORM_CONNECTION: postgres
           TYPEORM_SYNCHRONIZE: true
