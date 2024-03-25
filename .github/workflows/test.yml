@@ -6,9 +6,9 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -22,7 +22,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       ## Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -31,13 +31,13 @@ jobs:
         if: ${{ !env.ACT }}
         uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: 20.x
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v4
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -51,8 +51,13 @@ jobs:
       - name: Check linting
         run: yarn lint
 
-      - name: Check commit message linting
-        uses: wagoid/commitlint-github-action@v1
+      - name: Validate current commit message(last commit)
+        if: github.event_name == 'push'
+        run: npx commitlint --last --verbose
+
+      - name: Validate PR commit messages
+        if: github.event_name == 'pull_request'
+        run: npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose
 
       - name: Check tests
         run: yarn test
@@ -73,12 +78,12 @@ jobs:
         #  --health-timeout 5s
         #  --health-retries 5
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install node
         uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: 20.x
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
