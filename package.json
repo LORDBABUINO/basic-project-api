@@ -27,7 +27,7 @@
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.5.1",
     "pino": "^8.15.6",
-    "reflect-metadata": "^0.2.1",
+    "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.17",
     "uuidv4": "^6.2.6"
   },
