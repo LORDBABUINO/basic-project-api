@@ -28,7 +28,7 @@
     "pg": "^8.5.1",
     "pino": "^8.15.6",
     "reflect-metadata": "^0.2.1",
-    "typeorm": "^0.3.17",
+    "typeorm": "^0.3.26",
     "uuidv4": "^6.2.6"
   },
   "devDependencies": {
